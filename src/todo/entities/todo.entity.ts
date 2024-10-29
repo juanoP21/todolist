@@ -10,6 +10,9 @@ export class Todo {
   title: string;
 
   @Column()
+  description: string;
+
+  @Column()
   date: string;
 
   @Column()

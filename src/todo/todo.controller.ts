@@ -1,34 +1,56 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, ValidationPipe, Put, ParseIntPipe } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('todo')
+@ApiTags('Todo')
+
 export class TodoController {
-  constructor(private readonly todoService: TodoService) {}
+  constructor(private readonly todoService: TodoService) { }
 
-  @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto);
+  @Post(':userId')
+  create(
+    @Body(ValidationPipe) createTodoDto: CreateTodoDto,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.todoService.create(createTodoDto, Number(userId));
   }
 
-  @Get()
-  findAll() {
-    return this.todoService.findAll();
+  @Get('/findAllCompleted/:userId')
+  findAllTodosByUserIdCompleted(
+    @Param('userId', ParseIntPipe) userId: number) {
+    return this.todoService.findAllTodoByUserCompleted(Number(userId));
+  }
+  @Get('/findAllNotCompleted/:userId')
+  findAllTodosByUserIdNotCompleted(
+    @Param('userId', ParseIntPipe) userId: number) {
+    return this.todoService.findAllTodoByUserNotCompleted(Number(userId));
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todoService.findOne(+id);
+
+  @Get('/finonetodo/:id/:idtodo')
+  findOne(
+    @Param('id', ParseIntPipe) id: string, 
+    @Param('idtodo') idtodo: string) {
+    return this.todoService.findOnetodo(+id, +idtodo);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todoService.update(+id, updateTodoDto);
+  @Put(':userId/:todoId')
+  update(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('todoId', ParseIntPipe) todoId: number,
+    @Body() updateTodoDto: UpdateTodoDto,
+  ) {
+    return this.todoService.update(userId, todoId, updateTodoDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+  @Delete(':userId/:todoId')
+  remove(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('todoId', ParseIntPipe) todoId: number,
+  ) {
+    return this.todoService.remove(userId, todoId);
   }
 }

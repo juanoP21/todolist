@@ -18,7 +18,6 @@ export class UsersService {
   ) { }
   async create(createUserDto: CreateUserDto) {
     const { password, ...userdata } = createUserDto;
-
     // Check if user already exists
     const salt = bcrypt.genSaltSync();
     const userParse = {
@@ -57,7 +56,9 @@ export class UsersService {
 
 
 
-
+  findUserById(id: number) {
+    return this.userRepository.findOneOrFail({ where: { id: id } });
+  }
 
 
 
