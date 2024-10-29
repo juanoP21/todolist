@@ -1,4 +1,4 @@
-import { Injectable  } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,32 +20,41 @@ export class TodoService {
     todo.title = createTodoDto.title;
     todo.date = new Date().toLocaleString();
     todo.description = createTodoDto.description;
+    todo.dateend = createTodoDto.dateend;
+    todo.state = createTodoDto.state
     todo.completed = false;
     todo.user = await this.userService.findUserById(userId);
-    return this.todoRepository.save(todo);
+    this.todoRepository.save(todo); 
+    return { message: 'todo created successfully' };
+
   }
 
   async findAllTodoByUserCompleted(userId: number) {
-    
+
     return await this.todoRepository.find({
       relations: ['user'],
       where: { user: { id: userId }, completed: true },
     });
   }
   async findAllTodoByUserNotCompleted(userId: number) {
-    
+
     return await this.todoRepository.find({
       relations: ['user'],
       where: { user: { id: userId }, completed: false },
     });
   }
 
- async findOnetodo(id: number, idtodo: number) {
+  async findOnetodo(id: number, idtodo: number) {
     return await this.todoRepository.findOne({
       where: { id: idtodo, user: { id: id } },
     });
   }
 
+  async findAllTodosByUserId(userId: number): Promise<Todo[]> {
+    return this.todoRepository.find({
+      where: { user: { id: userId } },
+    });
+  }
   async update(userId: number, todoId: number, updateTodoDto: UpdateTodoDto) {
     await this.todoRepository.update(todoId, updateTodoDto);
     return this.todoRepository.findOne({

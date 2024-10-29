@@ -25,6 +25,8 @@ export class UsersService {
       password: await bcrypt.hash(password, salt),
     };
     await this.userRepository.save(userParse);
+    return { message: 'User created successfully' };
+
   }
 
 
@@ -35,7 +37,7 @@ export class UsersService {
       where: { email: userlogindata.email },
     });
 
-    if (!userExist) throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
+    if (!userExist) throw new HttpException('User no exist', HttpStatus.CONFLICT);
 
     const isCheck = await bcrypt.compare(password, userExist[0].password);
 

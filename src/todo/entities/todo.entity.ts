@@ -18,6 +18,12 @@ export class Todo {
   @Column()
   completed: boolean;
 
+  @Column()
+  dateend: string;
+
+  @Column()
+  state?: string;
+
   //   many todos can belong to single user
   @ManyToOne(() => User, (user) => user.todos)
   user: User;

@@ -28,7 +28,11 @@ export class TodoController {
     @Param('userId', ParseIntPipe) userId: number) {
     return this.todoService.findAllTodoByUserNotCompleted(Number(userId));
   }
-
+  @Get('/findAll/:userId')
+  findAllTodosByUserId(
+    @Param('userId', ParseIntPipe) userId: number) {
+    return this.todoService.findAllTodosByUserId(Number(userId));
+  }
 
   @Get('/finonetodo/:id/:idtodo')
   findOne(

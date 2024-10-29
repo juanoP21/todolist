@@ -11,7 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: "secretkey",
-        signOptions: { expiresIn: 3600 },
+        signOptions: { expiresIn: 36000 },
       }),
     }),
   ],

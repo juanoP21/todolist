@@ -9,7 +9,7 @@ export class UpdateTodoDto {
   @IsOptional()
   description?: string;
 
-  @IsBoolean()
+ 
   @IsOptional()
-  completed?: boolean;
+  state?: string;
 }
