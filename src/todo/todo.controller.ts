@@ -18,16 +18,7 @@ export class TodoController {
     return this.todoService.create(createTodoDto, Number(userId));
   }
 
-  @Get('/findAllCompleted/:userId')
-  findAllTodosByUserIdCompleted(
-    @Param('userId', ParseIntPipe) userId: number) {
-    return this.todoService.findAllTodoByUserCompleted(Number(userId));
-  }
-  @Get('/findAllNotCompleted/:userId')
-  findAllTodosByUserIdNotCompleted(
-    @Param('userId', ParseIntPipe) userId: number) {
-    return this.todoService.findAllTodoByUserNotCompleted(Number(userId));
-  }
+  
   @Get('/findAll/:userId')
   findAllTodosByUserId(
     @Param('userId', ParseIntPipe) userId: number) {

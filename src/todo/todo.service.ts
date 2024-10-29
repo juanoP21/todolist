@@ -29,21 +29,6 @@ export class TodoService {
 
   }
 
-  async findAllTodoByUserCompleted(userId: number) {
-
-    return await this.todoRepository.find({
-      relations: ['user'],
-      where: { user: { id: userId }, completed: true },
-    });
-  }
-  async findAllTodoByUserNotCompleted(userId: number) {
-
-    return await this.todoRepository.find({
-      relations: ['user'],
-      where: { user: { id: userId }, completed: false },
-    });
-  }
-
   async findOnetodo(id: number, idtodo: number) {
     return await this.todoRepository.findOne({
       where: { id: idtodo, user: { id: id } },
